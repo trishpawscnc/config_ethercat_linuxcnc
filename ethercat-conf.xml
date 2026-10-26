@@ -80,27 +80,33 @@
         </pdo>
       </syncManager>
     </slave>
+    
+    
+ <!-- Четвертый слейв: Инвертор MD520 (Плата V1.07) по заводскому ESI -->
+   
+  <slave idx="3" type="generic" vid="00100000" pid="0000011a" configPdos="true">
+    <!-- SM2: Управление (из LinuxCNC в частотник) -->
+    <syncManager idx="2" dir="out">
+      <pdo idx="0x1600">
+        <pdoEntry idx="0x2073" subIdx="0x12" bitLen="16" halPin="spindle-controlword" halType="u32"/>
+        <pdoEntry idx="0x2073" subIdx="0x11" bitLen="16" halPin="spindle-target-frequency" halType="s32"/>
+      </pdo>
+    </syncManager>
+
+    <!-- SM3: Мониторинг (из частотника в LinuxCNC) -->
+    <syncManager idx="3" dir="in">
+      <pdo idx="0x1a00">
+        <pdoEntry idx="0x2070" subIdx="0x45" bitLen="16" halPin="spindle-statusword" halType="u32"/>
+        <pdoEntry idx="0x2070" subIdx="0x46" bitLen="16" halPin="spindle-actual-frequency" halType="s32"/>
+      </pdo>
+    </syncManager>
+  </slave>
 
 
-    <!-- Четвертый слейв: Частотник шпинделя Inovance MD520 с платой MD500-ECAT -->
-    <slave idx="3" type="generic" vid="0000010a" pid="00000001" configPdos="true">
-      <syncManager idx="2" dir="out">
-        <pdo idx="1600">
-          <!-- Управляющее слово CiA402 (Запуск, остановка, сброс ошибок) -->
-          <pdoEntry idx="6040" subIdx="00" bitLen="16" halPin="spindle-controlword" halType="u32"/>
-          <!-- Задание целевой частоты вращения шпинделя (в 0.01 Гц) -->
-          <pdoEntry idx="6042" subIdx="00" bitLen="16" halPin="spindle-target-frequency" halType="s32"/>
-        </pdo>
-      </syncManager>
-      <syncManager idx="3" dir="in">
-        <pdo idx="1A00">
-          <!-- Слово состояния ПЧ -->
-          <pdoEntry idx="6041" subIdx="00" bitLen="16" halPin="spindle-statusword" halType="u32"/>
-          <!-- Текущая выходная частота ПЧ (в 0.01 Гц) -->
-          <pdoEntry idx="6044" subIdx="00" bitLen="16" halPin="spindle-actual-frequency" halType="s32"/>
-        </pdo>
-      </syncManager>
-    </slave>
+
+
+
+
 
  </master>
 </masters>
